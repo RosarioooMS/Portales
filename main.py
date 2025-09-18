@@ -21,6 +21,29 @@ def get_base64_of_bin_file(bin_file):
 # Logo (ajustado a la ruta dentro de Prueba/)
 logo_base64 = get_base64_of_bin_file("Prueba/logo.png")
 
+# Fondo de la app (depa.png)
+fondo_base64 = get_base64_of_bin_file("Prueba/depa.png")
+
+# ===================== STREAMLIT APP =====================
+st.set_page_config(page_title="Los Portales - Tabla Financiamiento", layout="wide")
+
+# Aplicar fondo con CSS
+st.markdown(
+    f"""
+    <style>
+    .stApp {{
+        background-image: url("data:image/png;base64,{fondo_base64}");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }}
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+st.title("📊 Generar Tablas de Financiamiento")
+
 # Header con logo y título
 st.markdown(f"""
 <div class="header" style="display:flex;align-items:center;gap:15px;">
@@ -201,10 +224,7 @@ def crear_tabla_tipo_unid(filtrados, proyecto):
     tabla.attrs["titulo"] = proyecto
     return tabla
 
-# ===================== STREAMLIT APP =====================
-st.set_page_config(page_title="Los Portales - Tabla Financiamiento", layout="wide")
-st.title("📊 Generar Tablas de Financiamiento")
-
+# ===================== APP =====================
 st.markdown('<div class="dashboard-container">', unsafe_allow_html=True)
 
 archivo = st.file_uploader("📂 Sube el archivo Excel (hoja 'Ficha')", type=["xlsx", "xls"])
