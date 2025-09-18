@@ -11,15 +11,7 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import cm
 from reportlab.lib.enums import TA_CENTER, TA_LEFT
 
-# ===================== ESTILOS Y HEADER =====================
-# Cargar estilos CSS locales
-def local_css(file_name):
-    with open(file_name, "r", encoding="utf-8") as f:
-        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
-
-local_css("Prueba/style.css")
-
-
+# ===================== FUNCIONES =====================
 # Función para convertir imagen a base64
 def get_base64_of_bin_file(bin_file):
     with open(bin_file, 'rb') as f:
@@ -51,7 +43,7 @@ def crear_tabla_financiamiento(filtrados, grupo):
         else:
             columnas_ventas.append(f"Si logra {i} venta{'s' if i > 1 else ''} del {grupo}")
 
-    # === Configuración según grupo ===
+    # Configuración según grupo
     if grupo == "Grupo 1":
         filas = [
             "Contado",
@@ -146,7 +138,6 @@ def crear_tabla_financiamiento(filtrados, grupo):
     else:
         return None
 
-    # === Construcción tabla ===
     columnas_finales = ["% logro"] + columnas_ventas
     tabla = pd.DataFrame("", index=filas, columns=columnas_finales)
 
@@ -212,7 +203,7 @@ def crear_tabla_tipo_unid(filtrados, proyecto):
 
 # ===================== STREAMLIT APP =====================
 st.set_page_config(page_title="Los Portales - Tabla Financiamiento", layout="wide")
-st.title("📊 Generar Tablas de  Financiamiento")
+st.title("📊 Generar Tablas de Financiamiento")
 
 st.markdown('<div class="dashboard-container">', unsafe_allow_html=True)
 
@@ -293,7 +284,6 @@ if archivo:
             elements = []
             styles = getSampleStyleSheet()
 
-            # Estilos para las celdas (Paragraphs)
             style_cell = ParagraphStyle(
                 name="cell",
                 fontSize=8,
