@@ -14,11 +14,11 @@ from reportlab.lib.enums import TA_CENTER, TA_LEFT
 # ===================== ESTILOS Y HEADER =====================
 # Cargar estilos CSS locales
 def local_css(file_name):
-    with open(file_name) as f:
+    with open(file_name, "r", encoding="utf-8") as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
-# Aplica tu style.css (ajustado a la ruta dentro de Prueba/)
 local_css("Prueba/style.css")
+
 
 # Función para convertir imagen a base64
 def get_base64_of_bin_file(bin_file):
