@@ -19,10 +19,10 @@ def get_base64_of_bin_file(bin_file):
     return base64.b64encode(data).decode()
 
 # Logo (ajustado a la ruta dentro de Prueba/)
-logo_base64 = get_base64_of_bin_file("Prueba/logo.png")
+logo_base64 = get_base64_of_bin_file("logo.png")
 
 # Fondo de la app (depa.png)
-fondo_base64 = get_base64_of_bin_file("Prueba/depa.png")
+fondo_base64 = get_base64_of_bin_file("depa.png")
 
 # ===================== STREAMLIT APP =====================
 st.set_page_config(page_title="Los Portales - Tabla Financiamiento", layout="wide")
