@@ -17,8 +17,8 @@ def local_css(file_name):
     with open(file_name) as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
-# Aplica tu style.css
-local_css("style.css")
+# Aplica tu style.css (ajustado a la ruta dentro de Prueba/)
+local_css("Prueba/style.css")
 
 # Función para convertir imagen a base64
 def get_base64_of_bin_file(bin_file):
@@ -26,7 +26,8 @@ def get_base64_of_bin_file(bin_file):
         data = f.read()
     return base64.b64encode(data).decode()
 
-logo_base64 = get_base64_of_bin_file("logo.png")
+# Logo (ajustado a la ruta dentro de Prueba/)
+logo_base64 = get_base64_of_bin_file("Prueba/logo.png")
 
 # Header con logo y título
 st.markdown(f"""
@@ -307,16 +308,13 @@ if archivo:
             )
 
             def safe_str(val):
-                # Evita 'nan' y formatea floats limpiamente
                 if pd.isna(val):
                     return ""
                 if isinstance(val, float):
-                    # Mantener la representación original si ya es porcentaje o decimal
                     return str(val)
                 return str(val)
 
             def df_to_table(df, titulo):
-                # Cabecera con Paragraphs
                 header = [Paragraph(df.index.name or "", style_index)] + [Paragraph(str(c), style_cell) for c in df.columns]
                 data = [header]
 
@@ -326,8 +324,7 @@ if archivo:
                         row_cells.append(Paragraph(safe_str(val), style_cell))
                     data.append(row_cells)
 
-                # Calcular anchos proporcionales al ancho de la página
-                ancho_total = A4[0] - 2*cm  # margen izquierdo/derecho de 1 cm
+                ancho_total = A4[0] - 2*cm
                 num_cols = len(data[0])
                 if num_cols == 0:
                     return
@@ -372,5 +369,3 @@ if archivo:
             )
 
 st.markdown('</div>', unsafe_allow_html=True)
-
-
