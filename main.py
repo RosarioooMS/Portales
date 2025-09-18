@@ -31,11 +31,23 @@ fondo_base64 = get_base64_of_bin_file(FONDO_PATH)
 # Aplicar fondo en la app
 st.markdown(f"""
 <style>
+    /* Fondo de pantalla completo */
     .dashboard-container {{
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
         background-image: url("data:image/png;base64,{fondo_base64}");
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
+        z-index: -1;  /* Fondo detrás de todo */
+    }}
+    /* Ajuste para que el contenido esté por encima del fondo */
+    .reportview-container .main .block-container {{
+        position: relative;
+        z-index: 1;
         padding: 20px;
     }}
     .header img {{
@@ -247,7 +259,9 @@ if archivo:
                                   (tabla2,"Tabla Financiamiento - Grupo 2"),
                                   (tabla3,"Tabla Financiamiento - Grupo 3"),
                                   (tabla_tipo_unid,f"Tabla Financiamiento - {proyecto} (ES / DP)")]:
-                if tabla is not None: df_to_table(tabla, titulo)
+
+                if tabla is not None: 
+                    df_to_table(tabla, titulo)
 
             doc.build(elements)
             buffer.seek(0)
