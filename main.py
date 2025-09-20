@@ -7,7 +7,7 @@ import base64
 import os
 from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer, Image
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import cm
 from reportlab.lib.enums import TA_CENTER, TA_LEFT
@@ -231,6 +231,20 @@ if archivo:
             def safe_str(val):
                 return "" if pd.isna(val) else str(val)
 
+            # --- Insertar logo pequeño ---
+            try:
+                img = Image(LOGO_PATH, width=80, height=50)
+                img.hAlign = 'CENTER'
+                elements.append(img)
+                elements.append(Spacer(1, 12))
+            except Exception as e:
+                st.warning(f"No se pudo cargar el logo en el PDF: {e}")
+
+            # --- Insertar título del proyecto ---
+            elements.append(Paragraph(f"<b>{proyecto}</b>", ParagraphStyle(
+                name="titulo_proyecto", fontSize=14, alignment=TA_CENTER, spaceAfter=20)))
+            elements.append(Spacer(1, 12))
+
             def df_to_table(df, titulo):
                 header = [Paragraph(df.index.name or "", style_index)] + [Paragraph(str(c), style_cell) for c in df.columns]
                 data = [header]
@@ -259,7 +273,6 @@ if archivo:
                                   (tabla2,"Tabla Financiamiento - Grupo 2"),
                                   (tabla3,"Tabla Financiamiento - Grupo 3"),
                                   (tabla_tipo_unid,f"Tabla Financiamiento - {proyecto} (ES / DP)")]:
-
                 if tabla is not None: 
                     df_to_table(tabla, titulo)
 
