@@ -142,8 +142,8 @@ def crear_tabla_tipo_unid(filtrados, proyecto):
     return tabla
 
 # ===================== STREAMLIT APP =====================
-st.set_page_config(page_title="Los Portales - Tabla Financiamiento", layout="wide")
-st.title("📊 Generar Tablas de Financiamiento")
+st.set_page_config(page_title="Los Portales - Ficha Departamentos", layout="wide")
+st.title("📊 Generar Ficha Departamentos")
 st.markdown('<div class="dashboard-container">', unsafe_allow_html=True)
 
 archivo = st.file_uploader("📂 Sube el archivo Excel (hoja 'Ficha' y 'Dim Grupos')", type=["xlsx","xls"])
@@ -172,7 +172,7 @@ if archivo:
     periodo = st.selectbox("Seleccione PERIODO:", periodos)
     proyecto = st.selectbox("Seleccione PROYECTO:", proyectos)
 
-    if st.button("📊 Crear Tablas Financiamiento"):
+    if st.button("📊 Crear Ficha Departamentos"):
         dia, mes, anio = map(int, periodo.split('/'))
         periodo_fecha = datetime(anio, mes, dia)
         filtrados = df[(df['PERIODO']==periodo_fecha)&(df['PROYECTO']==proyecto)]
@@ -188,7 +188,7 @@ if archivo:
 
             for i, t in enumerate([tabla1, tabla2, tabla3, tabla_tipo_unid], start=1):
                 if t is not None:
-                    st.subheader(f"📌 Tabla Financiamiento - Grupo {i}" if i<=3 else f"📌 Tabla Financiamiento - {proyecto} (ES / DP)")
+                    st.subheader(f"📌 Ficha Departamentos - Grupo {i}" if i<=3 else f"📌 Ficha Departamentos - {proyecto} (ES / DP)")
                     st.dataframe(t)
 
             if all(x is None for x in [tabla1, tabla2, tabla3, tabla_tipo_unid]):
@@ -234,7 +234,6 @@ if archivo:
                 primer_com = comision_total.iloc[0]
                 elements.append(Paragraph(f"1. Comision por unidad Vendida***: {safe_str(primer_com['Comentario'])}", styles["Normal"]))
                 elements.append(Spacer(1,8))
-                # Restantes se mostrarán después de Tabla 3
                 resto_comisiones = comision_total.iloc[1:]
             else:
                 resto_comisiones = pd.DataFrame()
@@ -265,13 +264,12 @@ if archivo:
                 elements.append(Spacer(1,16))
 
             # --- Insertar tablas ---
-            for idx, (tabla, titulo, grupo) in enumerate([(tabla1,"Tabla Financiamiento - Grupo 1","Grupo 1"),
-                                                          (tabla2,"Tabla Financiamiento - Grupo 2","Grupo 2"),
-                                                          (tabla3,"Tabla Financiamiento - Grupo 3","Grupo 3"),
-                                                          (tabla_tipo_unid,f"Tabla Financiamiento - {proyecto} (ES / DP)",None)], start=1):
+            for idx, (tabla, titulo, grupo) in enumerate([(tabla1,"Ficha Departamentos - Grupo 1","Grupo 1"),
+                                                          (tabla2,"Ficha Departamentos - Grupo 2","Grupo 2"),
+                                                          (tabla3,"Ficha Departamentos - Grupo 3","Grupo 3"),
+                                                          (tabla_tipo_unid,f"Ficha Departamentos - {proyecto} (ES / DP)",None)], start=1):
                 if tabla is not None:
                     df_to_table(tabla, titulo)
-                    # Después de Tabla 3 insertar resto de comisiones
                     if grupo=="Grupo 3" and not resto_comisiones.empty:
                         for _, row in resto_comisiones.iterrows():
                             elements.append(Paragraph(f"{safe_str(row['Comentario'])}", styles["Normal"]))
@@ -288,7 +286,7 @@ if archivo:
 
             doc.build(elements)
             buffer.seek(0)
-            st.download_button(label="⬇️ Descargar Tablas en PDF", data=buffer.getvalue(),
-                               file_name="Tablas_Financiamiento.pdf", mime="application/pdf")
+            st.download_button(label="⬇️ Descargar Ficha Departamentos en PDF", data=buffer.getvalue(),
+                               file_name="Ficha_Departamentos.pdf", mime="application/pdf")
 
 st.markdown('</div>', unsafe_allow_html=True)
